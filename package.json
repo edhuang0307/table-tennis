@@ -1,0 +1,22 @@
+{
+  "name": "table-tennis",
+  "version": "1.0.0",
+  "description": "![乒乓球](doc/pong-game.jpg)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edhuang0307/table-tennis.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/edhuang0307/table-tennis/issues"
+  },
+  "homepage": "https://github.com/edhuang0307/table-tennis#readme",
+  "dependencies": {
+    "typescript": "^4.4.2"
+  }
+}

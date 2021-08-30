@@ -1,0 +1,51 @@
+body {
+    margin: 0;
+    background-color: cornsilk;
+
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#table {
+    position: relative;
+
+    width: calc(274px * 2);
+    height: calc(152px * 2);
+
+    background-color: darkgreen;
+    border: 10px solid black;
+
+    /* display: none; */
+    /* visibility: hidden; */
+    /* opacity: 0%; */
+}
+
+#dot-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(50% - 2.5px);
+    height: 100%;
+
+    border-right: 5px dotted black;
+}
+
+.cube {
+    width: 100px;
+    height: 100px;
+
+    background-color: pink;
+}
+
+/* display: none, inline, block, inline-block, flex, inline-flex, grid, inline-grid */
+/* position: static, relative, absolute, fixed */
+/* width, height, padding-left/right/top/bottom, border-left/right/top/bottom, margin-left/right/top/bottom */
+/* background-color, color */
+/* px, %, em, rem, vm, vh */
+/* calc(), rgb(), rgba() */
+/* html tag (div, span), id, class: css 表達 (., #, ...) */
+/* border radius: draw circle *;
