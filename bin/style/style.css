@@ -1,0 +1,119 @@
+body {
+    margin: 0px;
+    background-color: lightsteelblue;
+
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* #box-red {
+    background-color: orange;
+    border: 10px double black; */
+    /* padding-left: 60px;
+    padding-top: 20px;
+    border: 5px solid black;
+    margin-bottom: 50px;
+    margin-top: 50px; */
+    /* width: calc(100vw - 20px);
+    height: calc(100vw * 9 / 16 - 20px);
+}
+
+#box-blue {
+    background-color: blue;
+}
+
+#box-green {
+    background-color: green;
+}
+
+.small {
+    width: 100px;
+    height: 100px;
+}
+
+.big {
+    width: 200px;
+    height: 200px;
+} */
+
+/* .round-corner {
+    border-radius: 20px;
+} */
+
+/* .shadow {
+    box-shadow: 10px 5px 5px black;
+} */
+
+#table {
+    position: relative;
+    background-color: darkblue;
+    width: calc(274px * 4);
+    height: calc(152px * 4);
+    border: 10px solid white;
+}
+
+#net {
+    /* position: absolute; */
+    /* left: 10px; */
+    width: calc(50% - 5px);
+    height: 100%;
+    border-right: 10px dotted white;
+}
+
+
+#paddle-02 {
+    position: absolute;
+    top:50px;
+    /* right:10px; */
+    left:10px;
+    bottom:0;
+    width: 20px;
+    height: 100px;
+    background-color: white;
+}
+
+#paddle-01 {
+    position: absolute;
+    /* top:50px; */
+    right: 10px;
+    /* left:10px; */
+    bottom:50px;
+    width: 20px;
+    height: 100px;
+    background-color: white;
+}
+
+#ball {
+    position: absolute;
+    top: 350px;
+    /* right:10px; */
+    left:400px;
+    bottom:0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: white;
+}
+
+#score-01 {
+    position: absolute;
+    font-size: 175px;
+    top: 1px;
+    right:400px;
+    border-radius: 50%;
+    color: white;
+    opacity: 50%;
+}
+
+#score-02 {
+    position: absolute;
+    font-size: 175px;
+    top: 1px;
+    left:400px;
+    border-radius: 50%;
+    color: white;
+    opacity: 50%;
+}
