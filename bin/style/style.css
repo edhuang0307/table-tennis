@@ -33,6 +33,8 @@ body {
     width: 20px;
     height: 100px;
     background-color: white;
+
+    pointer-events: none;
 }
 
 #paddle-01 {
@@ -44,6 +46,8 @@ body {
     width: 20px;
     height: 100px;
     background-color: white;
+
+    pointer-events: none;
 }
 
 #ball {
