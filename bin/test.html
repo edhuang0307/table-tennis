@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>座標</title>
+    <link rel="stylesheet" type="text/css" href="style/teststyle.css">
+
+
+    <style>
+        body {
+            width: 105vw;
+            height: 105vh;
+
+        }
+        div {
+            width: 200px;
+            height: 200px;
+            border: 5px solid black;
+            position: relative;
+
+
+        }
+        span {font-size:15px; color: blue;}
+
+        p {
+            position:relative;
+            left: 50px;
+        }
+
+    </style>
+</head>
+<body>
+    <div onmousemove="myFunction(event)"></div>
+
+    <p>offsetX: <span id="offsetX"></span>    offsetY: <span id="demo2"></span></p>
+    <p>movementX: <span id="movementX"></span>    movementY: <span id="movementY"></span></p>
+    <p>screenX: <span id="screenX"></span>    screenY: <span id="screenY"></span></p>
+    <p>clientX: <span id="clientX"></span>    clientY: <span id="clientY"></span></p>
+    <p>pageX: <span id="pageX"></span>    pageY: <span id="pageY"></span></p>
+    <p>x: <span id="x"></span>    y: <span id="y"></span></p>
+
+
+    <script>
+        //offsetX div裡面的座標
+        function myFunction(event) {
+        var offsetX = event.offsetX;
+        var offsetY = event.offsetY;
+        document.getElementById("offsetX").innerHTML = offsetX;
+        document.getElementById("demo2").innerHTML = offsetY;
+        
+        //clientX 距離瀏覽器窗口的座標
+        var clientX = event.clientX;
+        var clientY = event.clientY;
+        document.getElementById("clientX").innerHTML = clientX;
+        document.getElementById("clientY").innerHTML = clientY;
+
+        //movementX 位移量
+        var movementX = event.movementX;
+        var movementY = event.movementY;
+        document.getElementById("movementX").innerHTML = movementX;
+        document.getElementById("movementY").innerHTML = movementY;
+
+        //screenX 距離銀幕距離的座標
+        var screenX = event.screenX;
+        var screenY = event.screenY;
+        document.getElementById("screenX").innerHTML = screenX;
+        document.getElementById("screenY").innerHTML = screenY;
+        
+        //pageX 距離瀏覽器窗口的座標(包含卷軸)
+        var pageX = event.pageX;
+        var pageY = event.pageY;
+        document.getElementById("pageX").innerHTML = pageX;
+        document.getElementById("pageY").innerHTML = pageY;
+        
+        //x 距離瀏覽器窗口的座標
+        var x = event.x;
+        var y = event.y;
+        document.getElementById("x").innerHTML = x;
+        document.getElementById("y").innerHTML = y;
+        };
+
+    </script>
+</body>
+</html>

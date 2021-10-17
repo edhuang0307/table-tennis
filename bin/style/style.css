@@ -1,10 +1,8 @@
 body {
     margin: 0px;
     background-color: lightsteelblue;
-
     width: 100vw;
     height: 100vh;
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,56 +11,62 @@ body {
 #table {
     position: relative;
     background-color: darkblue;
-    width: calc(274px * 4);
-    height: calc(152px * 4);
-    border: 10px solid white;
+    /* width: 1096px; */
+    width: 70vw;
+    /* height: 608px; */
+    height: 38vw;
+    border: 1vw solid lightslategray;
+    /* transform: scale(2, 2); */
 }
 
 #net {
-    width: calc(50% - 5px);
+    width: calc(50% - 0.25vw);
     height: 100%;
-    border-right: 10px dotted white;
+    display: flex;
+    justify-content: center;
+    border-right: 0.5vw dashed lightslategray;
 }
 
 
 #paddle-02 {
     position: absolute;
-    top:50px;
-    left:10px;
-    bottom:0;
-    width: 20px;
-    height: 100px;
+    top: 4vw;
+    left: 0.5vw;
+    /* width: 20px;
+    height: 100px; */
+    width: 1.5vw;
+    height: 8vw;
     background-color: white;
+
+    pointer-events: none;
 }
 
 #paddle-01 {
     position: absolute;
-    /* top:50px; */
-    right: 10px;
-    /* left:10px; */
-    bottom:50px;
-    width: 20px;
-    height: 100px;
+    right: 0.5vw;
+    bottom: 4vw;
+    width: 1.5vw;
+    height: 8vw;
     background-color: white;
+
+    pointer-events: none;
 }
 
 #ball {
     position: absolute;
-    top: 350px;
-    /* right:10px; */
-    left:400px;
-    bottom:0;
-    width: 30px;
-    height: 30px;
+    top: 26vw;
+    left:30vw;
+    width: 2vw;
+    height: 2vw;
     border-radius: 50%;
     background-color: white;
 }
 
 #score-01 {
     position: absolute;
-    font-size: 175px;
-    top: 1px;
-    right:400px;
+    font-size: 10vw;
+    top: -1vw;
+    right:27vw;
     border-radius: 50%;
     color: white;
     opacity: 50%;
@@ -70,10 +74,11 @@ body {
 
 #score-02 {
     position: absolute;
-    font-size: 175px;
-    top: 1px;
-    left:400px;
+    font-size: 10vw;
+    top: -1vw;
+    left:27vw;
     border-radius: 50%;
     color: white;
     opacity: 50%;
 }
+
