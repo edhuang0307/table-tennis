@@ -3,12 +3,12 @@ const table = document.getElementById("table");
 const net = document.getElementById("net");
 const ball = document.getElementById("ball");
 const player1 = {
-    paddle: document.getElementById("paddle-01"),
-    score: document.getElementById("score-01"),
+    paddle: document.getElementById("paddle1"),
+    score: document.getElementById("score1"),
 };
 const player2 = {
-    paddle: document.getElementById("paddle-02"),
-    score: document.getElementById("score-02"),
+    paddle: document.getElementById("paddle2"),
+    score: document.getElementById("score2"),
 };
 // const half = player1.paddle.offsetHeight / 2
 // function clamp(value: number, max: number, min: number) {
@@ -43,4 +43,16 @@ table.addEventListener("mousemove", (event) => {
     // const y = event.offsetY - player1.paddle.offsetHeight / 2;
     player1.paddle.style.top = `${y - half}px`;
 });
+var y = 0;
+window.onload = function () {
+    setInterval(function () {
+        player2.paddle.style.top = y;
+        if (y < +(table.offsetHeight)) {
+            y++;
+        }
+        else if (y > +(table.offsetHeight) - player2.paddle.offsetHeight) {
+            y--;
+        }
+    }, 10);
+};
 //# sourceMappingURL=main.js.map

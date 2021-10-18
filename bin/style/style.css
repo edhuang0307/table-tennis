@@ -28,7 +28,7 @@ body {
 }
 
 
-#paddle-02 {
+#paddle2 {
     position: absolute;
     top: 4vw;
     left: 0.5vw;
@@ -41,7 +41,7 @@ body {
     pointer-events: none;
 }
 
-#paddle-01 {
+#paddle1 {
     position: absolute;
     right: 0.5vw;
     bottom: 4vw;
@@ -62,7 +62,7 @@ body {
     background-color: white;
 }
 
-#score-01 {
+#score1 {
     position: absolute;
     font-size: 10vw;
     top: -1vw;
@@ -72,7 +72,7 @@ body {
     opacity: 50%;
 }
 
-#score-02 {
+#score2 {
     position: absolute;
     font-size: 10vw;
     top: -1vw;

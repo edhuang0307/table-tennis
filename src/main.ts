@@ -3,13 +3,13 @@ const net = document.getElementById("net") as HTMLDivElement;
 const ball = document.getElementById("ball") as HTMLDivElement;
 
 const player1 = {
-    paddle: document.getElementById("paddle-01") as HTMLDivElement,
-    score: document.getElementById("score-01") as HTMLDivElement,
+    paddle: document.getElementById("paddle1") as HTMLDivElement,
+    score: document.getElementById("score1") as HTMLDivElement,
 };
 
 const player2 = {
-    paddle: document.getElementById("paddle-02") as HTMLDivElement,
-    score: document.getElementById("score-02") as HTMLDivElement, 
+    paddle: document.getElementById("paddle2") as HTMLDivElement,
+    score: document.getElementById("score2") as HTMLDivElement, 
 };
 
 
@@ -59,8 +59,19 @@ table.addEventListener("mousemove", (event: MouseEvent) => {
 })  
 
 
+var y = 0;
+window.onload = function() {
+    setInterval(function() 
+    {   
+        player2.paddle.style.top = y;
+        if (y < +(table.offsetHeight)) {
+            y++;
+        }
+        else if (y > +(table.offsetHeight) - player2.paddle.offsetHeight) {
+            y--;
+        }
+    }, 10);
+}
 
 
-
- 
 
