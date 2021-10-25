@@ -1,19 +1,35 @@
+type Direction = -1 | 0 | 1;
+
+const fps = 1000 / 30;
+
 const table = document.getElementById("table") as HTMLDivElement;
 const net = document.getElementById("net") as HTMLDivElement;
 const ball = document.getElementById("ball") as HTMLDivElement;
 
+/** 玩家 */
 const player1 = {
     paddle: document.getElementById("paddle1") as HTMLDivElement,
     score: document.getElementById("score1") as HTMLDivElement,
 };
 
+/** NPC */
 const player2 = {
     paddle: document.getElementById("paddle2") as HTMLDivElement,
-    score: document.getElementById("score2") as HTMLDivElement, 
+    score: document.getElementById("score2") as HTMLDivElement,
+    data: {
+        /** 每幀的移動距離 (像素) */
+        rate: 1,
+        y: 0,
+        direction: 1 as Direction,
+    },
 };
 
-
-
+const ballData = {
+    /** 每幀的移動距離 (像素) */
+    rate: 1,
+    point: [0, 0] as [x: number, y: number],
+    direction: [1, 1] as [x: Direction, y: Direction],
+};
 
 // const half = player1.paddle.offsetHeight / 2
 
@@ -29,49 +45,41 @@ const player2 = {
 //     }
 // }
 
+// 處理玩家的控制
+// table.onmousemove
+table.addEventListener("mousemove", event => {
+    const border = getComputedStyle(table).borderWidth;
+    const width = +(border.match(/\d+/)?.[0] || 0);
+    // const width = +border.match(/\d+/)![0];
 
-
-
-
-table.addEventListener("mousemove", (event: MouseEvent) => {
-    //todo 處理 table. style.border, 去單位 >> 字串轉數字 * 2
-    table.style.border = "13px solid lightslategray";
-    const border = table.style.border;
-
-    let result1 = "" as string;
-    for (let i = 0; i < border.length; i++) {
-        if (border[i].match(/[0-9.]/)) {
-            result1 += border[i];
-        }
-    }
-    const strToNum = +result1;
-    const half = player1.paddle.offsetHeight / 2
+    const half = player1.paddle.offsetHeight / 2;
 
     let y = event.offsetY;
     if (y < half) {
-        y = half ;
+        y = half;
     }
-    else if (y >= table.offsetHeight - half - strToNum * 2) {
-        y = table.offsetHeight - half - strToNum * 2;
+    else if (y >= table.offsetHeight - half - width * 2) {
+        y = table.offsetHeight - half - width * 2;
     }
-    // const y = event.offsetY - player1.paddle.offsetHeight / 2;
+
     player1.paddle.style.top = `${ y - half }px`;
-})  
+})
 
+// window.onload
+addEventListener("load", event => {
+    // 移動手把
+    const border = getComputedStyle(table).borderWidth;
+    const width = +(border.match(/\d+/)?.[0] || 0);
 
-var y = 0;
-window.onload = function() {
-    setInterval(function() 
-    {   
-        player2.paddle.style.top = y;
-        if (y < +(table.offsetHeight)) {
-            y++;
-        }
-        else if (y > +(table.offsetHeight) - player2.paddle.offsetHeight) {
-            y--;
-        }
-    }, 10);
-}
+    setInterval(() => {
+        if (player2.data.y >= table.offsetHeight - player1.paddle.offsetHeight - width * 2)
+            player2.data.direction = -1;
+        else if (player2.data.y <= 0)
+            player2.data.direction = 1;
 
+        player2.data.y += player2.data.rate * player2.data.direction;
+        player2.paddle.style.top = `${ player2.data.y }px`;
+    }, fps);
 
-
+    //TODO 移動球
+});
