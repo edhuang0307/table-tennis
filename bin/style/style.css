@@ -27,24 +27,24 @@ body {
     border-right: 0.5vw dashed lightslategray;
 }
 
-
 #paddle2 {
     position: absolute;
     top: 4vw;
     left: 0.5vw;
-    /* width: 20px;
-    height: 100px; */
+    /* width: 20px; */
+    /* height: 100px; */
     width: 1.5vw;
     height: 8vw;
     background-color: white;
 
     pointer-events: none;
 }
-
 #paddle1 {
     position: absolute;
+    /** = 桌子寬度 - 球拍寬度 - 距離桌邊 */
+    /* left: calc(70vw - 1.5vw - 0.5vw); */
     right: 0.5vw;
-    bottom: 4vw;
+    top: 0;
     width: 1.5vw;
     height: 8vw;
     background-color: white;
@@ -54,31 +54,24 @@ body {
 
 #ball {
     position: absolute;
-    top: 26vw;
-    left:30vw;
     width: 2vw;
     height: 2vw;
     border-radius: 50%;
     background-color: white;
 }
 
+.score {
+    position: absolute;
+    font-size: 10vw;
+    top: -1vw;
+    color: white;
+    opacity: 50%;
+
+    pointer-events: none;
+}
 #score1 {
-    position: absolute;
-    font-size: 10vw;
-    top: -1vw;
-    right:27vw;
-    border-radius: 50%;
-    color: white;
-    opacity: 50%;
+    right: 27vw;
 }
-
 #score2 {
-    position: absolute;
-    font-size: 10vw;
-    top: -1vw;
-    left:27vw;
-    border-radius: 50%;
-    color: white;
-    opacity: 50%;
+    left: 27vw;
 }
-

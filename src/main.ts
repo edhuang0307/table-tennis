@@ -1,27 +1,29 @@
+// 型別與常數
 type Direction = -1 | 0 | 1;
-const fps = 1000 / 30;
+enum GameState {
+    Begin, Prepare, Running, End,
+};
 
+const FPS = 1000 / 30;
+
+// 宣告變數
 const table = document.getElementById("table") as HTMLDivElement;
 const net = document.getElementById("net") as HTMLDivElement;
-const ball = {
-    ball: document.getElementById("ball") as HTMLDivElement,
-    data: {
-        rate: 6,
-        x: 0,
-        y: 0,
-        directionX: 1,
-        directionY: 1, 
-    }
-};
+
+const score1 = {
+    element: document.getElementById("score1") as HTMLDivElement,
+    value: 0,
+}
+const score2 = {
+    element: document.getElementById("score2") as HTMLDivElement,
+    value: 0,
+}
 
 const player1 = {
     paddle: document.getElementById("paddle1") as HTMLDivElement,
-    score: document.getElementById("score1") as HTMLDivElement,
 };
-
 const player2 = {
-    paddle: document.getElementById("paddle2") as HTMLDivElement, 
-    score: document.getElementById("score2") as HTMLDivElement, 
+    paddle: document.getElementById("paddle2") as HTMLDivElement,
     data: {
         /** 每幀的移動離 (像素)*/ 
         rate: 2,
@@ -30,61 +32,86 @@ const player2 = {
     },
 };
 
-// let tool = {
-//     border: getComputedStyle(table).borderWidth,
-//     width: +(this.border.match(/\d+/)![0]),
-//     getBorder: function () {
-//         const border = this.border;
-//     },
-//     getWidth: function () {
-//         const width = this.width;
-//     },
-// }
+const ball = {
+    element: document.getElementById("ball") as HTMLDivElement,
+    data: {
+        /** 每幀移動的像素量 (= rate * direction) */
+        rate: 6,
+        start: player1 as typeof player1 | typeof player2,
+        directionX: 0,
+        directionY: 0, 
+    }
+};
 
-// 玩家跟電腦有同樣常數，宣告方法
-function borderAndWidth(t:HTMLDivElement) {
-    const border = getComputedStyle(t).borderWidth;
-    const width = +(border.match(/\d+/)?.[0] || 0);  
+let gameState = GameState.Begin;
+
+// 宣告方法
+function getValue(text: string, defaultValue = 0) {
+    return +(text.match(/-?\d+/)?.[0] || defaultValue);
 }
 
+/** 取得元素的長、寬、邊寬 */
+function getBorder(element: HTMLElement) {
+    //NOTE getComputedStyle() 方法獲取指定元素的所有實際 (計算) CSS 屬性和值
+    const { width, height, borderWidth } = getComputedStyle(element);
+    return {
+        width: getValue(width),
+        height: getValue(height),
+        borderWidth: getValue(borderWidth),
+    };
+}
 
-// note getComputedStyle() 方法獲取指定元素的所有實際（計算）CSS 屬性和值。
+/** 得分後重新發球 */
+function reset(player: typeof player1 | typeof player2) {
+    ball.data.start = player;
+    ball.data.directionX = 0;
+    ball.data.directionY = 0;
+    ball.data.rate = 6;    //TODO 越來越快
+
+    gameState = GameState.Prepare;
+}
+
+/** 更新分數 */
+function updateScore(score: typeof score1 | typeof score2) {
+    // if (ball.data.startX - +(ball.element.style.width) < 0)
+
+    score.value++;
+    score.element.textContent = `${ score.value }`;
+}
+
+// 初始化
+reset(player1);
+
 // 處理玩家的控制
-table.addEventListener("mousemove", (event) => {
-
-    // borderAndWidth(table);
-
-    const border = getComputedStyle(table).borderWidth; // 先取出 13px
-    const width = +(border.match(/\d+/)?.[0] || 0);  
-
-    const half = player1.paddle.offsetHeight / 2 // 球拍高度 / 2
+table.addEventListener("mousemove", event => {
+    const { borderWidth } = getBorder(table);
+    const half = player1.paddle.offsetHeight / 2;    // = 球拍高度 / 2
 
     let y = event.offsetY;
     if (y < half) {
         y = half;
     }
-    else if (y >= table.offsetHeight - half - width * 2) {
-        y = table.offsetHeight - half - width * 2;
+    else if (y >= table.offsetHeight - half - borderWidth * 2) {
+        y = table.offsetHeight - half - borderWidth * 2;
     }
     player1.paddle.style.top = `${ y - half }px`;
-})  
+});
+table.addEventListener("click", event => {
+    if (gameState === GameState.Prepare && ball.data.start === player1) {
+        ball.data.directionX = -1;
+        ball.data.directionY = Math.random() > 0.5 ? 1 : -1;
 
-// 得分後重新發球
-function reset() {
-    ball.data.x = +(table.style.width) / 2;
-    ball.data.y = +(table.style.height) / 2;
-    ball.data.directionX = -ball.data.directionX;
-    ball.data.rate = 6;
-}
+        gameState = GameState.Running;
+    }
+});
 
-
+// 網頁載入完成時
 addEventListener("load", event => {
-    // 移動電腦
-    const border = getComputedStyle(table).borderWidth;
-    const width = +border.match(/\d+/)![0]; // ! 表示一定找得到資料
+    const { borderWidth } = getBorder(table);
 
+    // 移動電腦
     setInterval(() => {
-        if (player2.data.y >= table.offsetHeight - player1.paddle.offsetHeight - width * 2) 
+        if (player2.data.y >= table.offsetHeight - player1.paddle.offsetHeight - borderWidth * 2) 
             player2.data.direction = -1;
         
         else if (player2.data.y <= 0)
@@ -92,48 +119,51 @@ addEventListener("load", event => {
 
         player2.data.y += player2.data.rate * player2.data.direction;
         player2.paddle.style.top = `${ player2.data.y }px`;
-    }, fps)
-
+    }, FPS);
 
     // 移動球
     setInterval(() => {
+        switch (gameState) {
+            case GameState.Prepare: {
+                if (ball.data.start === player1) {
+                    const { top, left, height } = getComputedStyle(ball.data.start.paddle);
+                    const { width: ballWidth, height: ballHeight } = getComputedStyle(ball.element);
 
-        // 控制球 y 軸方向
-        if (ball.data.y >= table.clientHeight - 25) 
-        ball.data.directionY = -1;
-        
-        else if (ball.data.y <= 0)
-            ball.data.directionY = 1;
+                    ball.element.style.top = `${ getValue(top) + getValue(height) / 2 - getValue(ballHeight) / 2 }px`;
+                    ball.element.style.left = `${ getValue(left) - getValue(ballWidth) }px`;
+                }
+                else {
+                    //TODO 跟著 player2
+                }
+                break;
+            }
+            case GameState.Running: {
+                const { top, left, width, height } = getComputedStyle(table);
+                const { top: ballTop, left: ballLeft, width: ballWidth, height: ballHeight } = getComputedStyle(ball.element);
 
-        ball.data.y +=ball.data.rate * ball.data.directionY;
-        ball.ball.style.top = `${ ball.data.y }px`;
+                // 控制球 y 軸方向
+                if (getValue(ballTop) <= 0)
+                    ball.data.directionY = 1;
+                else if (getValue(ballTop) >= getValue(height))
+                    ball.data.directionY = -1;
 
-        // 控制球 x 軸方向
-        if (ball.data.x >= table.offsetWidth - ball.ball.offsetWidth -25 ) {
-            reset() // 重新開球
-            ball.data.directionX = -1;
+                console.log(getValue(ballTop), ball.data.directionY);
+
+                const lastBallLeft = getValue(ballLeft) + ball.data.rate * ball.data.directionX;
+
+                ball.element.style.top = `${ getValue(ballTop) + ball.data.rate * ball.data.directionY }px`;
+                ball.element.style.left = `${ lastBallLeft }px`;
+
+                //TODO 判斷球拍是否擊中球
+
+                //TODO 僅有球拍未擊中球時，才判斷出界
+                // 根據球 x 軸方向，決定遊戲狀態 (判斷出界)
+                if (lastBallLeft >= getValue(width))
+                    reset(player2);
+                else if (lastBallLeft <= 0)
+                    reset(player2);
+                break;
+            }
         }
-        
-    
-        else if (ball.data.x <= 0) {
-            reset() // 重新開球
-            ball.data.directionX = 1;
-        }
-
-        ball.data.x +=ball.data.rate * ball.data.directionX;
-        ball.ball.style.left = `${ ball.data.x }px`;
-
-    }, fps)
-
-})
-
-
-// 更新分數
-function updateScore() {
-    if (ball.data.x - +(ball.ball.style.width) < 0) {
-        // player1.score.innerText++
-        reset();
-    }
-}
-
-
+    }, FPS);
+});
