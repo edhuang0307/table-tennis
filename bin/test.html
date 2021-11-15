@@ -9,16 +9,23 @@
 
 
     <style>
+        /* 萬用選取器 reset  */
+        * {
+            margin: 0;
+            padding: 0;
+        }
         body {
             width: 105vw;
             height: 105vh;
 
         }
         div {
-            width: 200px;
-            height: 200px;
+            width: 250px;
+            height: 250px;
+            padding: 10px;
             border: 5px solid black;
             position: relative;
+            margin: 50px;
 
 
         }
@@ -32,7 +39,8 @@
     </style>
 </head>
 <body>
-    <div onmousemove="myFunction(event)"></div>
+    <div onmousemove="myFunction(event)">中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文</div>
+
 
     <p>offsetX: <span id="offsetX"></span>    offsetY: <span id="demo2"></span></p>
     <p>movementX: <span id="movementX"></span>    movementY: <span id="movementY"></span></p>
