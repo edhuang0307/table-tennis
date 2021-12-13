@@ -66,7 +66,7 @@ function reset(player: typeof player1 | typeof player2) {
     ball.data.start = player;
     ball.data.directionX = 0;
     ball.data.directionY = 0;
-    ball.data.rate = 6;    //TODO 越來越快
+    player2.data.rate += 0.5;
 
     gameState = GameState.Prepare;
 }
@@ -97,8 +97,8 @@ table.addEventListener("mousemove", event => {
     player1.paddle.style.top = `${ y - half }px`;
 });
 table.addEventListener("click", event => {
-    if (gameState === GameState.Prepare && ball.data.start === player1) {
-        ball.data.directionX = -1;
+    if (gameState === GameState.Prepare) {
+        ball.data.directionX = (ball.data.start === player1) ? -1 : 1;
         ball.data.directionY = Math.random() > 0.5 ? 1 : -1;
 
         gameState = GameState.Running;
@@ -111,7 +111,7 @@ addEventListener("load", event => {
 
     // 移動電腦
     setInterval(() => {
-        if (player2.data.y >= table.offsetHeight - player1.paddle.offsetHeight - borderWidth * 2) 
+        if (player2.data.y >= table.offsetHeight - player2.paddle.offsetHeight - borderWidth * 2) 
             player2.data.direction = -1;
         
         else if (player2.data.y <= 0)
@@ -125,29 +125,29 @@ addEventListener("load", event => {
     setInterval(() => {
         switch (gameState) {
             case GameState.Prepare: {
-                if (ball.data.start === player1) {
-                    const { top, left, height } = getComputedStyle(ball.data.start.paddle);
-                    const { width: ballWidth, height: ballHeight } = getComputedStyle(ball.element);
+                const { top, left, width, height } = getComputedStyle(ball.data.start.paddle);
+                const { width: ballWidth, height: ballHeight } = getComputedStyle(ball.element);
 
-                    ball.element.style.top = `${ getValue(top) + getValue(height) / 2 - getValue(ballHeight) / 2 }px`;
+                ball.element.style.top = `${ getValue(top) + getValue(height) / 2 - getValue(ballHeight) / 2 }px`;
+
+                // 根據發球者，決定球應該位於球拍的左或右側
+                if (ball.data.start === player1)
                     ball.element.style.left = `${ getValue(left) - getValue(ballWidth) }px`;
-                }
-                else {
-                    //TODO 跟著 player2
-                }
+                else ball.element.style.left = `${ getValue(left) + getValue(width) }px`;
                 break;
             }
             case GameState.Running: {
                 const { top, left, width, height } = getComputedStyle(table);
                 const { top: ballTop, left: ballLeft, width: ballWidth, height: ballHeight } = getComputedStyle(ball.element);
 
+                const { top: paddle1Top, left: paddle1Left, width: paddle1Width, height: paddle1Height } = getComputedStyle(player1.paddle);
+                const { top: paddle2Top, left: paddle2Left, width: paddle2Width, height: paddle2Height } = getComputedStyle(player2.paddle);
+
                 // 控制球 y 軸方向
                 if (getValue(ballTop) <= 0)
                     ball.data.directionY = 1;
-                else if (getValue(ballTop) >= getValue(height))
+                else if (getValue(ballTop) + getValue(ballHeight) >= getValue(height))
                     ball.data.directionY = -1;
-
-                console.log(getValue(ballTop), ball.data.directionY);
 
                 const lastBallLeft = getValue(ballLeft) + ball.data.rate * ball.data.directionX;
 
@@ -155,13 +155,33 @@ addEventListener("load", event => {
                 ball.element.style.left = `${ lastBallLeft }px`;
 
                 //TODO 判斷球拍是否擊中球
+                // 判斷球 x 軸
+                // 介於 Player 2 的球拍厚度
+                if (ball.data.directionX === -1 && getValue(ballLeft) > getValue(paddle2Left) && getValue(ballLeft) < getValue(paddle2Left) + getValue(paddle2Width)) {
+                    if (getValue(ballTop) > getValue(paddle2Top) && getValue(ballTop) + getValue(ballHeight) < getValue(paddle2Top) + getValue(paddle2Height)) {
+                        ball.data.directionX *= -1;
+                    }
+                }
+                // 介於 Player 1 的球拍厚度
+                else if (ball.data.directionX === 1 && getValue(ballLeft) + getValue(ballWidth) < getValue(paddle1Left) + getValue(paddle1Width) && getValue(ballLeft) + getValue(ballWidth) > getValue(paddle1Left)) {
+                    if (getValue(ballTop) > getValue(paddle1Top) && getValue(ballTop) + getValue(ballHeight) < getValue(paddle1Top) + getValue(paddle1Height)) {
+                        ball.data.directionX *= -1;
+                    }
+                }
 
                 //TODO 僅有球拍未擊中球時，才判斷出界
                 // 根據球 x 軸方向，決定遊戲狀態 (判斷出界)
-                if (lastBallLeft >= getValue(width))
+                if (lastBallLeft >= getValue(width)) {
+                    updateScore(score2);
                     reset(player2);
-                else if (lastBallLeft <= 0)
-                    reset(player2);
+                }
+                else if (lastBallLeft <= 0) {
+                    updateScore(score1);
+                    reset(player1);
+
+                    player1.paddle.style.height = `${ getValue(paddle1Height) / window.innerWidth * 100 - 0.5 }vw`;
+                    player2.paddle.style.height = `${ getValue(paddle2Height) / window.innerWidth * 100 + 0.5 }vw`;
+                }
                 break;
             }
         }

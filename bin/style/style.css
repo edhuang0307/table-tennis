@@ -34,7 +34,7 @@ body {
     /* width: 20px; */
     /* height: 100px; */
     width: 1.5vw;
-    height: 8vw;
+    height: 16vw;
     background-color: white;
 
     pointer-events: none;
@@ -46,7 +46,7 @@ body {
     right: 0.5vw;
     top: 0;
     width: 1.5vw;
-    height: 8vw;
+    height: 16vw;
     background-color: white;
 
     pointer-events: none;
